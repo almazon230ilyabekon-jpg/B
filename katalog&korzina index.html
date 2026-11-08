@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог техники Apple — Алмафон</title>
+   <link rel="shortcut icon" href="images/favicon.jpg" type="image/x-icon">
+    <style>
+        :root {
+            --main-green: #1baa00;
+            --dark-bg: #0a0a0a;
+            --text-light: #e0e0e0;
+            --border-color: #2a2a2a;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --btn-gray: #333333;
+            --cart-badge: #ff4757;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin: 40px 0;
+            color: var(--main-green);
+            text-shadow: 
+                0 0 3px var(--main-green),
+                0 0 8px var(--main-green),
+                0 0 15px rgba(27, 170, 0, 0.4);
+            font-weight: 700;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .filters {
+            background: #141414;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .filter-group label {
+            color: #b0b0b0;
+        }
+
+        .filter-group select {
+            background: #1a1a1a;
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .btn-filter {
+            margin-left: auto;
+            padding: 10px 20px;
+            background: var(--btn-gray);
+            color: var(--text-light);
+            border: 2px solid var(--btn-gray);
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .btn-filter:hover {
+            background: var(--main-green);
+            color: #000;
+            border-color: var(--main-green);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--main-green);
+        }
+
+        .section {
+            background: #141414;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(27, 170, 0, 0.1);
+        }
+
+        .section h2 {
+            color: var(--main-green);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .section p {
+            color: #b0b0b0;
+        }
+
+        .btn,
+        .btn-outline {
+            display: inline-block;
+            background: var(--btn-gray);
+            color: var(--text-light);
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--btn-gray);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover,
+        .btn-outline:hover {
+            background: var(--main-green);
+            color: #000;
+            border-color: var(--main-green);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--main-green);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            background: #1a1a1a;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(27, 170, 0, 0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #222;
+        }
+
+        .product-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-info h4 {
+            color: var(--main-green);
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+
+        .product-info p {
+            color: #b0b0b0;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .product-card .btn {
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .accessories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .accessory-card {
+            background: #1a1a1a;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .accessory-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(27, 170, 0, 0.1);
+        }
+
+        .accessory-card h4 {
+            color: var(--main-green);
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #555;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .section h2 { font-size: 1.5rem; }
+            .filters { flex-direction: column; align-items: stretch; }
+            .btn-filter { width: 100%; margin-left: 0; }
+        }
+
+
+        /* === КОРЗИНА: СТИЛИ ИКОНКИ И ОКНА === */
+        .cart-icon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #1a1a1a;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px var(--main-green);
+        }
+
+        .cart-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--text-light);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--cart-badge);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1100;
+        }
+
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            background: #141414;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow-y: auto;
+            z-index: 1200;
+            padding: 25px;
+        }
+
+        .cart-modal h3 {
+            color: var(--main-green);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .cart-empty {
+            text-align: center;
+            color: #777;
+            padding: 40px 0;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .cart-item-info {
+            flex-grow: 1;
+        }
+
+        .cart-item-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qty-btn {
+            width: 30px;
+            height: 30px;
+            background: #2a2a2a;
+            border: 1px solid #333;
+            color: var(--text-light);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .qty-input {
+            width: 50px;
+            text-align: center;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: var(--text-light);
+            border-radius: 6px;
+            padding: 5px;
+        }
+
+        .remove-item {
+            color: var(--cart-badge);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: underline;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .cart-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn-checkout {
+            flex-grow: 1;
+            background: var(--main-green);
+            color: #000;
+            border: none;
+            padding: 15px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .btn-clear {
+            flex-grow: 1;
+            background: transparent;
+            color: var(--cart-badge);
+            border: 1px solid var(--cart-badge);
+            padding: 15px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .close-cart {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            color: #777;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .cart-modal { width: 95%; padding: 20px; }
+            .cart-item { flex-direction: column; align-items: flex-start; }
+            .cart-item-controls { width: 100%; justify-content: space-between; margin-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Техника Apple «Алмафон»</h1>
+
+    <div class="container">
+
+        <!-- Главный баннер -->
+        <section class="section">
+            <h2>Добро пожаловать в «Алмафон»</h2>
+            <p>Ваш надёжный проводник в экосистеме умных технологий. Мы — магазин, для которого качество начинается ещё до покупки. Мы не просто продаём технику, мы помогаем выбрать инструмент, который станет продолжением ваших идей.</p>
+        </section>
+
+        <!-- Фильтры каталога -->
+        <section class="section">
+            <h2>Каталог устройств</h2>
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="category">Категория:</label>
+                    <select id="category">
+                        <option value="all">Все устройства</option>
+                        <option value="iphone">iPhone</option>
+                        <option value="ipad">iPad</option>
+                        <option value="mac">Mac</option>
+                        <option value="watch">Apple Watch</option>
+                        <option value="accessories">Аксессуары</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="sort">Сортировка:</label>
+                    <select id="sort">
+                        <option value="popular">По популярности</option>
+                        <option value="price-low">Цена: по возрастанию</option>
+                        <option value="price-high">Цена: по убыванию</option>
+                    </select>
+                </div>
+                <button class="btn-filter" id="applyFilters">Применить</button>
+            </div>
+        </section>
+
+        <!-- Единая сетка для товаров и аксессуаров -->
+        <section class="section">
+            <div class="products-grid" id="productsGrid">
+
+                <!-- Новые iPhone (добавлен data-id) -->
+                <div class="product-card" data-category="iphone" data-price="118990" data-id="1">
+                    <img src="https://via.placeholder.com/300x200/1a1a1a/FFFFFF?text=iPhone+18+Pro+Black" alt="iPhone 18 Pro Black" class="product-image">
+                    <div class="product-info">
+                        <h4>iPhone 18 Pro Black 256 eSIM</h4>
+                        <p>Флагман нового поколения. Полностью черный титановый корпус, процессор A20 Bionic.</p>
+                        <div class="product-price">118 990 ₽</div>
+                        <a href="#" class="btn btn-add-to-cart">В корзину</a>
+                    </div>
+                </div>
+                <div class="product-card" data-category="iphone" data-price="89990" data-id="2">
+                    <img src="https://via.placeholder.com/300x200/1a1a1a/FFFFFF?text=iPhone+17+Pro+Cosmic+Orange" alt="iPhone 17 Pro Cosmic Orange" class="product-image">
+                    <div class="product-info">
+                        <h4>iPhone 17 Pro Cosmic Orange 256GB eSIM</h4>
+                        <p>Емкость аккумулятора: 100%. Уникальный цвет «Космический оранжевый», чип A19 Pro.</p>
+                        <div class="product-price">89 990 ₽</div>
+                        <a href="#" class="btn btn-add-to-cart">В корзину</a>
+                    </div>
+                </div>
+                <div class="product-card" data-category="iphone" data-price="69990" data-id="3">
+                    <img src="https://via.placeholder.com/300x200/1a1a1a/FFFFFF?text=iPhone+16+Pro+Max+White" alt="iPhone 16 Pro Max White" class="product-image">
+                    <div class="product-info">
+                        <h4>iPhone 16 Pro Max White Titanium 256GB eSIM</h4>
+                        <p>Емкость аккумулятора: 100%. Благородный белый титан, увеличенный аккумулятор.</p>
+                        <div class="product-price">69 990 ₽</div>
+                        <a href="#" class="btn btn-add-to-cart">В корзину</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Заглушка при пустой выборке -->
+            <div id="emptyState" style="display: none; text-align: center; color: #777; padding: 60px 0;">
+                <h3>По вашему запросу ничего не найдено</h3>
+                <p>Попробуйте изменить параметры фильтрации.</p>
+            </div>
+        </section>
+
+        <!-- Дополнительные блоки (Trade-in, Рассрочка, Гарантия) -->
+        <section class="section">
+            <h2>Выгодное обновление: Trade-in</h2>
+            <p>Ваша старая техника может значительно удешевить новую. Принесите ваше предыдущее устройство Apple на диагностику, и мы оценим его стоимость в тот же день.</p>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="#" class="btn">Оценить моё устройство</a>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Технологии сегодня — оплата завтра: Рассрочка</h2>
+            <p>Не откладывайте покупку. Оформите беспроцентную рассрочку на любое устройство прямо в магазине или онлайн. Никакой переплаты, скрытых комиссий и сложных договоров.</p>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="#" class="btn">Оформить рассрочку</a>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Спокойствие в каждом байте: Гарантия</h2>
+            <p>Покупая у нас, вы получаете полную официальную гарантию производителя. А для максимального спокойствия мы предлагаем расширенные программы защиты от случайных повреждений.</p>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="#" class="btn btn-outline">Подробнее о гарантии</a>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        &copy; 2026 «Алмафон». Ваш надёжный проводник в экосистеме Apple. <br>
+        Все устройства сертифицированы для РФ. Официальная гарантия.
+    </footer>
+
+    <!-- Иконка корзины -->
+    <div class="cart-icon" id="cartIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.6 51.2 32h418.5c22 0 41.5-12.6 51.2-32H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H31.1C17.7 48 0 30.3 0 24zM0 480c0 13.3 10.7 24 24 24s24-10.7 24-24V309.2c0-5.4 2.3-10.5 6.4-14l105.4-92.8c14.8-13.2 35-11.7 48.2 3.5l104 112c6 6.4 9.3 15 9.3 24V480zM528 32h-80V24c0-13.3-10.7-24-24-24s-24 10.7-24 24v8h-80c-13.3 0-24 10.7-24 24s10.7 24 24 24h12.6l-9.3 128H288c-53 0-96 43-96 96c0 13.3 10.7 24 24 24s24-10.7 24-24c0-17.7 14.3-32 32-32h192c17.7 0 32 14.3 32 32c0 13.3 10.7 24 24 24s24-10.7 24-24c0-53-43-96-96-96h-45.9l-9.3-128H552c13.3 0 24-10.7 24-24s-10.7-24-24-24z"/></svg>
+        <div class="cart-count" id="cartCount">0</div>
+    </div>
+
+    <!-- Модальное окно корзины -->
+    <div class="cart-modal-overlay" id="cartOverlay"></div>
+    <div class="cart-modal" id="cartModal">
+        <button class="close-cart" id="closeCartBtn">&times;</button>
+        <h3>Ваша корзина</h3>
+        <div id="cartItemsContainer"></div>
+        <div class="cart-total">
+            <span>Итого:</span>
+            <span id="cartTotalPrice">0 ₽</span>
+        </div>
+        <div class="cart-actions">
+            <button class="btn-checkout" id="checkoutBtn">Оформить заказ</button>
+            <button class="btn-clear" id="clearCartBtn">Очистить корзину</button>
+        </div>
+    </div>
+
+    <script>
+        /* --- ЛОГИКА КОРЗИНЫ --- */
+        const cartIcon = document.getElementById('cartIcon');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const cartModal = document.getElementById('cartModal');
+        const closeCartBtn = document.getElementById('closeCartBtn');
+        const cartCount = document.getElementById('cartCount');
+        const cartItemsContainer = document.getElementById('cartItemsContainer');
+        const cartTotalPrice = document.getElementById('cartTotalPrice');
+        const clearCartBtn = document.getElementById('clearCartBtn');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+
+        let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function updateCart() {
+            localStorage.setItem('cart', JSON.stringify(cartItems));
+            renderCart();
+        }
+
+        function renderCart() {
+            cartItemsContainer.innerHTML = '';
+            let totalPrice = 0;
+            let totalCount = 0;
+
+            if (cartItems.length === 0) {
+                cartItemsContainer.innerHTML = '<div class="cart-empty">Корзина пуста</div>';
+            } else {
+                cartItems.forEach(item => {
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'cart-item';
+                    itemEl.innerHTML = `
+                        <img src="${item.img}" alt="${item.name}">
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <div class="cart-item-controls">
+                                <button class="qty-btn dec-btn" data-id="${item.id}">-</button>
+                                <input type="number" class="qty-input" data-id="${item.id}" value="${item.qty}" min="1">
+                                <button class="qty-btn inc-btn" data-id="${item.id}">+</button>
+                                <span style="margin-left: 10px; font-weight: 600;">${(item.price * item.qty).toLocaleString()} ₽</span>
+                            </div>
+                        </div>
+                        <button class="remove-item" data-id="${item.id}">Удалить</button>
+                    `;
+                    cartItemsContainer.appendChild(itemEl);
+                    totalPrice += item.price * item.qty;
+                    totalCount += item.qty;
+                });
+            }
+
+            cartTotalPrice.textContent = totalPrice.toLocaleString() + ' ₽';
+            cartCount.textContent = totalCount;
+            cartCount.style.display = totalCount > 0 ? 'flex' : 'none';
+            checkoutBtn.disabled = totalCount === 0;
+            checkoutBtn.style.opacity = totalCount === 0 ? '0.6' : '1';
+        }
+
+        cartIcon.addEventListener('click', () => {
+            cartOverlay.style.display = 'block';
+            cartModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+
+        const closeCart = () => {
+            cartOverlay.style.display = 'none';
+            cartModal.style.display = 'none';
+            document.body.style.overflow = '';
+        };
+        cartOverlay.addEventListener('click', closeCart);
+        closeCartBtn.addEventListener('click', closeCart);
+
+        cartItemsContainer.addEventListener('click', (e) => {
+            const id = parseInt(e.target.dataset.id);
+            const item = cartItems.find(i => i.id === id);
+            if (!item) return;
+
+            if (e.target.classList.contains('inc-btn')) {
+                item.qty++;
+                updateCart();
+            }
+            if (e.target.classList.contains('dec-btn')) {
+                if (item.qty > 1) {
+                    item.qty--;
+                    updateCart();
+                }
+            }
+            if (e.target.classList.contains('qty-input')) {
+                const val = parseInt(e.target.value);
+                if (val >= 1 && val !== item.qty) {
+                    item.qty = val;
+                    updateCart();
+                } else {
+                    e.target.value = item.qty;
+                }
+            }
+            if (e.target.classList.contains('remove-item')) {
+                cartItems = cartItems.filter(i => i.id !== id);
+                updateCart();
+            }
+        });
+
+        clearCartBtn.addEventListener('click', () => {
+            if (confirm('Вы действительно хотите очистить корзину?')) {
+                cartItems = [];
+                updateCart();
+            }
+        });
+
+        function addToCart(id, name, price, img) {
+            const existingItem = cartItems.find(item => item.id === id);
+            if (existingItem) {
+                existingItem.qty++;
+            } else {
+                cartItems.push({ id, name, price, img, qty: 1 });
+            }
+            updateCart();
+            cartIcon.classList.add('added');
+            setTimeout(() => cartIcon.classList.remove('added'), 500);
+        }
+
+        /* --- ЛОГИКА КАТАЛОГА И ФИЛЬТРОВ --- */
+        const categorySelect = document.getElementById('category');
+        const sortSelect = document.getElementById('sort');
+        const applyButton = document.getElementById('applyFilters');
+        const productsGrid = document.getElementById('productsGrid');
+        const emptyState = document.getElementById('emptyState');
+
+        function filterAndSort() {
+            const selectedCategory = categorySelect.value;
+            const selectedSort = sortSelect.value;
+
+            const allCards = Array.from(productsGrid.querySelectorAll('.product-card'));
+            let visibleCards = [];
+
+            allCards.forEach(card => {
+                const cardCategory = card.dataset.category;
+                if (selectedCategory === 'all' || cardCategory === selectedCategory) {
+                    card.style.display = 'flex';
+                    visibleCards.push(card);
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (visibleCards.length === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+            }
+
+            visibleCards.sort((a, b) => {
+                const priceA = parseInt(a.dataset.price);
+                const priceB = parseInt(b.dataset.price);
+
+                if (selectedSort === 'price-low') {
+                    return priceA - priceB;
+                } else if (selectedSort === 'price-high') {
+                    return priceB - priceA;
+                }
+                return 0;
+            });
+
+            visibleCards.forEach(card => productsGrid.appendChild(card));
+        }
+
+        /* --- ОБРАБОТЧИКИ СОБЫТИЙ --- */
+
+        // Кнопки "В корзину" (делегирование)
+        productsGrid.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-add-to-cart')) {
+                e.preventDefault();
+                const card = e.target.closest('.product-card');
+                const id = parseInt(card.dataset.id);
+                const name = card.querySelector('h4').textContent;
+                const price = parseInt(card.dataset.price);
+                const img = card.querySelector('.product-image').src;
+
+                addToCart(id, name, price, img);
+            }
+        });
+
+        // Фильтры
+        applyButton.addEventListener('click', filterAndSort);
+        categorySelect.addEventListener('change', filterAndSort);
+        sortSelect.addEventListener('change', filterAndSort);
+
+        // Первичная загрузка
+        document.addEventListener('DOMContentLoaded', () => {
+            filterAndSort();
+            renderCart();
+        });
+    </script>
+</body>
+</html>
